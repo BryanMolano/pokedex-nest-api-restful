@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { SeedService } from './seed.service';
 import axios, { AxiosInstance } from 'axios';
 import { PokeResponse } from './interfaces/poke-response.interface';
+import { PokemonService } from '../pokemon/pokemon.service';
+import { CreatePokemonDto } from '../pokemon/dto/create-pokemon.dto';
 
 @Controller('seed')
 export class SeedController
@@ -11,16 +13,9 @@ export class SeedController
   }
 
   @Get()
-  async executeSeed()
+  executeSeed()
   {
-    const { data } = await axios.get<PokeResponse>('https://pokeapi.co/api/v2/pokemon?limit=650');
-    data.results.forEach(({ name, url }) =>
-    {
-      const segments = url.split('/');
-      const no = segments[segments.length - 1];
-      console.log({ name, no });
-    });
-
-    return data.results;
+    return this.seedService.executeSeed();
   }
+
 }
